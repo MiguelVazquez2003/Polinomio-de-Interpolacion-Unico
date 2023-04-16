@@ -113,16 +113,37 @@ private void resolver(double[][] matrix, JTextArea textArea) {
         for (int i = 0; i < n; i++) {
             textArea.append(String.format("a[%d] = %f\n", i, matrix[i][n]));
             JOptionPane.showMessageDialog(null, "a" + i + "= " + (matrix[i][n]));
-           
-            
+          
         }
-        for (int i = 0; i < n; i++) {
+        textArea.append(String.format("Calculo del valor aproximado por medio del polinomio\n\n\n"));
+        String resultado = ""; // Creamos una variable para almacenar el resultado del cálculo
+double sumatoria = 0; // Inicializamos la variable para la sumatoria
+for (int i = 0; i < n; i++) {
     double ai = matrix[i][n]; // Obtiene el valor de ai de la última columna de la fila i
     double xi = Math.pow(punto_obtenido, i); // Calcula xi como punto_obtenido elevado a la potencia i
-    solucion += ai * xi; // Multiplica ai por xi y suma el resultado a solucion
-}       
-        JOptionPane.showMessageDialog(null,"La solucion aproximada es: "+solucion);
-        textArea.append(String.format("La solucion aproximada es: %f",solucion));
+    double multiplicacion = ai * xi; // Calcula el resultado de ai por xi
+    sumatoria += multiplicacion; // Suma el resultado de ai por xi a la variable sumatoria
+    resultado += "a" + i + " * " + punto_obtenido + "^" + i + " = " + ai + " * " + xi + " = " + multiplicacion + "\n"; // Concatenamos el resultado del cálculo en la variable resultado
+}
+resultado += "Sumatoria: "; // Agregamos el texto "Sumatoria: " al resultado
+for (int i = 0; i < n; i++) {
+    double ai = matrix[i][n]; // Obtiene el valor de ai de la última columna de la fila i
+    double multiplicacion = ai * Math.pow(punto_obtenido, i); // Calcula el resultado de ai por punto_obtenido elevado a la potencia i
+    if (i == 0) {
+        resultado += multiplicacion; // Agregamos el primer término de la sumatoria sin el signo de suma
+    } else {
+        if (multiplicacion >= 0) {
+            resultado += " + "; // Agregamos el signo de suma y el resultado del cálculo si es positivo
+        } else {
+            resultado += " - "; // Agregamos el signo de resta y el resultado del cálculo si es negativo
+            multiplicacion = Math.abs(multiplicacion); // Obtenemos el valor absoluto del resultado para mostrarlo correctamente
+        }
+        resultado += multiplicacion; // Agregamos el resultado del cálculo al resultado final
+    }
+}
+resultado += " = " + sumatoria + "\n"; // Agregamos el resultado de la sumatoria al resultado final
+jTextArea.append(resultado); // Agregamos el resultado al JTextArea
+
         
 } catch (NumberFormatException e) {
     // El valor ingresado no es un número válido
@@ -170,6 +191,7 @@ private void printMatrix(double[][] matrix) {
         jLabel3 = new javax.swing.JLabel();
         punto = new javax.swing.JTextField();
         jButtonlimpiar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Polinomio de Interpolacion Unico");
@@ -236,6 +258,13 @@ private void printMatrix(double[][] matrix) {
             }
         });
 
+        jButton1.setText("INSTRUCCIONES");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -243,11 +272,16 @@ private void printMatrix(double[][] matrix) {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jButtonlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(313, 313, 313))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jButtonlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(290, 290, 290))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -285,18 +319,20 @@ private void printMatrix(double[][] matrix) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton_generar_polinomio)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(jButtonlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addComponent(jButtonlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -461,6 +497,15 @@ for (i = 0; i < columnModel.getColumnCount(); i++) {
         jTextArea.setText(""); //limpiar
     }//GEN-LAST:event_jButtonlimpiarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        VentanaImagenes ventana = new VentanaImagenes();
+        ventana.setVisible(true);
+    
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     
     /**
      * @param args the command line arguments
@@ -498,6 +543,7 @@ for (i = 0; i < columnModel.getColumnCount(); i++) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_generar_polinomio;
     private javax.swing.JButton jButtonlimpiar;
     private javax.swing.JButton jButtonsistema;
